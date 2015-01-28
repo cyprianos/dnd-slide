@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var images = require('./routes/images');
 
 var app = express();
 
@@ -23,8 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-//app.use('/users', users);
-
+app.use('/images', images);
 // catch 404 and forward to error handler
 /*app.use(function(req, res, next) {
     var err = new Error('Not Found');
@@ -45,20 +44,6 @@ if (app.get('env') === 'development') {
         });
     });
 }
-var dbUrl = "library";
-var collections = ["images"];
-var db = require('mongojs').connect(dbUrl, collections);
-
-app.get('/books', function(req, res){
-  db.images.find({}, function(err, images){
-    if(err) return;
-    var response = {
-      images: images
-    };
-    res.json(response);
-
-  });
-});
 
 
 // production error handler
@@ -70,6 +55,5 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
 
 module.exports = app;
