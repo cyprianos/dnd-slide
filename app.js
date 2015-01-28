@@ -23,14 +23,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+//app.use('/users', users);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+/*app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
-});
+});*/
 
 // error handlers
 
@@ -45,6 +45,21 @@ if (app.get('env') === 'development') {
         });
     });
 }
+var dbUrl = "library";
+var collections = ["images"];
+var db = require('mongojs').connect(dbUrl, collections);
+
+app.get('/books', function(req, res){
+  db.images.find({}, function(err, images){
+    if(err) return;
+    var response = {
+      images: images
+    };
+    res.json(response);
+
+  });
+});
+
 
 // production error handler
 // no stacktraces leaked to user
