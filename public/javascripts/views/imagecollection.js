@@ -4,8 +4,11 @@ define(['backbone', 'views/image'], function(Backbone, ImageView) {
     initialize: function(){
       this.listenTo(this.collection, "reset", this.render);
     },
-    tagName: 'ul',
+    tagName: 'section',
     className: 'images',
+    /*attributes: {
+      draggable: true
+    },*/
     render: function() {
       this.collection.each(function(image){
         var imageView = new ImageView({ model: image });
