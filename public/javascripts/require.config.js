@@ -4,7 +4,8 @@ require.config({
     jquery: 'lib/jquery',
     backbone: 'lib/backbone',
     underscore: 'lib/underscore',
-    handlebars: 'lib/handlebars'
+    handlebars: 'lib/handlebars',
+    interact: 'lib/interact'
   },
   shim: {
     backbone: {
