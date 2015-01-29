@@ -17,7 +17,8 @@ define(['backbone','handlebars','jquery','events'], function(Backbone,Handlebars
     },
     events: {
       'click .name': 'showSlide',
-      'dragstart': 'dragStart'
+      'dragstart': 'dragStart',
+      'dragend': 'drop'
     },
     attributes: {
       draggable: true
@@ -47,6 +48,20 @@ define(['backbone','handlebars','jquery','events'], function(Backbone,Handlebars
       this.$el.addClass('dragStart');
       console.log('dragStart', arguments);
     },
+    drop: function(e) { 
+     //console.log('jquery',e.position());
+      var evt = e.originalEvent;
+      console.log('drop', arguments);
+     var X = evt.pageX;
+     var Y = evt.pageY; 
+
+      this.model.set('position',{
+        x:X,
+        y:Y
+      });
+      this.render();
+      
+    },
     randomize: function(min,max) {
       var random = Math.floor(Math.random() * (max-min+1))+ min;
       return random;
@@ -59,7 +74,6 @@ define(['backbone','handlebars','jquery','events'], function(Backbone,Handlebars
       });
     }
   });
-
   return ImageView;
 });
 
