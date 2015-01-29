@@ -45,15 +45,15 @@ define(['backbone','handlebars','jquery','events'], function(Backbone,Handlebars
       Events.trigger("router:navigate", url);
     },
     dragStart: function() {
-      this.$el.addClass('dragStart');
+      //this.$el.addClass('dragStart');
       console.log('dragStart', arguments);
     },
     drop: function(e) { 
      //console.log('jquery',e.position());
       var evt = e.originalEvent;
       console.log('drop', arguments);
-     var X = evt.pageX;
-     var Y = evt.pageY; 
+     var X = evt.pageX - 75;
+     var Y = evt.pageY -75; 
 
       this.model.set('position',{
         x:X,
