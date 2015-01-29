@@ -5,4 +5,9 @@ block content
     =appData
   div.app
   script(id="imageTemplate", type="text/x-handlebars")
-    {{title}}: {{desc}} ({{url}})
+    <a href="#" class="name"> {{title}}</a> : {{desc}} ({{url}})
+  script(id="imageSlideTemplate", type="text/x-handlebars")
+    <h2>{{title}}</h2>
+    <p>Description: {{desc}}</p>
+    <p>url: {{url}}</p>
+

@@ -8,6 +8,9 @@ var ImageCollection = Backbone.Collection.extend({
 });
 
 var ImageView = Backbone.View.extend({
+  events: {
+    'click .name': 'showSlide'
+  },
   tagName: 'li',
   className: 'image',
   render: function() {
@@ -19,6 +22,11 @@ var ImageView = Backbone.View.extend({
 
     this.$el.html(html);
     return this;
+  },
+  showSlide: function(e) {
+    e.preventDefault();
+    var id = this.model.get('_id');
+    router.navigate('slide/' + id, {trigger:true});
   }
 });
 
@@ -37,23 +45,45 @@ var ImageCollectionView = Backbone.View.extend({
   }
 });
 
+var ImageSlideTemplate = Backbone.View.extend({
+  render: function(){
+    var template = $("#imageSlideTemplate").html();
+    var compiled = Handlebars.compile(template);
+    var html = compiled(this.model.attributes);
+    this.$el.html(html);
+    return this;
+  }
+});
+
 
 var AppRouter = Backbone.Router.extend({
+  
+  initialize: function(){
+    this._setup();
+  },
   routes: {
     "": "index",
     "slide/:id": "slide"
   },
 
+  _setup: function(){
+    var data = $("#initialContent").html();
+    if(this.collection) return;
+    this.collection = new ImageCollection(JSON.parse(data))
+  },
+  _renderView: function(view) {
+    $('.app').html(view.render().el);
+  },
+
   index: function(){
-    var data = JSON.parse($("#initialContent").html());
-    console.log('index');
-    collection = new ImageCollection(data);
-    //collection.fetch({ reset:true });
-    var view = new ImageCollectionView({ collection: collection });
-    $(".app").html(view.render().el);
+    //this.collection.fetch({ reset:true });
+    var view = new ImageCollectionView({ collection: this.collection });
+    this._renderView(view);
   },
   slide: function(id) {
-    
+    var image = this.collection.get(id);
+    var view = new ImageSlideTemplate({ model:image});
+    this._renderView(view);
   }
 
 });
