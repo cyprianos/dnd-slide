@@ -28,8 +28,8 @@ section.images{
 figure.image{
   width:150px;
   height:150px;
-  /*position:absolute;*/
-  float:left;
+  position:absolute;
+  /*float:left;*/
   background:gray;
   border: 2px solid #666666;
   background-color: #ccc;

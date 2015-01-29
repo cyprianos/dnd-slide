@@ -11,4 +11,4 @@ define(['backbone', 'handlebars'], function(Backbone,Handlebars) {
   });
 
   return ImageSlideView;
-})
+});
