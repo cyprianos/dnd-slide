@@ -2,8 +2,8 @@ define(['backbone'], function(Backbone){
   return Backbone.Model.extend({
     initialize: function() {
       var min = 0,
-        maxHeight = window.innerHeight-150,
-        maxWidth = window.innerWidth-150,
+        maxHeight = window.innerHeight * 0.7 - 150,
+        maxWidth = window.innerWidth * 0.7 - 150,
         width = this.randomize(min,maxWidth),
         height = this.randomize(min, maxHeight);
 

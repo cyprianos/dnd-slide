@@ -1,8 +1,9 @@
-define(['backbone', 'views/image'], function(Backbone, ImageView) {
+define(['backbone', 'views/image','interact', 'handlebars'], function(Backbone, ImageView, interact, Handlebars) {
 
   var ImageCollectionView = Backbone.View.extend({
     initialize: function(){
       this.listenTo(this.collection, "reset", this.render);
+      window.images = this.collection;
     },
     tagName: 'section',
     className: 'images',
@@ -10,13 +11,61 @@ define(['backbone', 'views/image'], function(Backbone, ImageView) {
       draggable: true
     },*/
     render: function() {
+      var template = $("#imageTemplate").html(),
+      compiled = Handlebars.compile(template),
+      html = '';
+
       this.collection.each(function(image){
         var imageView = new ImageView({ model: image });
-        this.$el.append(imageView.render().el);
+
+        //this.$el.append(imageView.render().el);
+        html+=imageView.render().$el.clone().wrap('<p>').parent().html();
+
       }, this);
+      html+='<div class="dropzone"></div>';
+      this.$el.html(html);
+      
+      //this.$el.append('<div class="dropzone">asd</div>');
       return this;
     }
   });
   return ImageCollectionView;
+  interact('.dropzone').dropzone({
+      // only accept elements matching this CSS selector
+      accept: '#yes-drop',
+      // Require a 75% element overlap for a drop to be possible
+      overlap: 0.75,
+
+      // listen for drop related events:
+
+      ondropactivate: function (event) {
+        // add active dropzone feedback
+        event.target.classList.add('drop-active');
+      },
+      ondragenter: function (event) {
+        var draggableElement = event.relatedTarget,
+            dropzoneElement = event.target;
+
+        // feedback the possibility of a drop
+        dropzoneElement.classList.add('drop-target');
+        draggableElement.classList.add('can-drop');
+        draggableElement.textContent = 'Dragged in';
+      },
+      ondragleave: function (event) {
+        // remove the drop feedback style
+        event.target.classList.remove('drop-target');
+        event.relatedTarget.classList.remove('can-drop');
+        event.relatedTarget.textContent = 'Dragged out';
+      },
+      ondrop: function (event) {
+        event.relatedTarget.textContent = 'Dropped';
+      },
+      ondropdeactivate: function (event) {
+        // remove active dropzone feedback
+        event.target.classList.remove('drop-active');
+        event.target.classList.remove('drop-target');
+      }
+    });
+
 
 });
